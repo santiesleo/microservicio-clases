@@ -1,5 +1,6 @@
 package co.analisys.clases.controller;
 
+import co.analisys.clases.dto.ClaseDTO;
 import co.analisys.clases.model.Clase;
 import co.analisys.clases.service.interfaces.IClaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,14 @@ class ClasesController {
     private IClaseService equipoService;
 
     @PostMapping
-    public Clase programarClase(@RequestBody Clase clase) {
-        return equipoService.programarClase(clase);
+    public ClaseDTO programarClase(@RequestBody ClaseDTO claseDTO) {
+        System.out.println("Recibiendo petición para programar clase: " + claseDTO);
+        return equipoService.programarClase(claseDTO);
     }
 
     @GetMapping
-    public List<Clase> obtenerTodasClases() {
+    public List<ClaseDTO> obtenerTodasClases() {
+        System.out.println("Consultando todas las clases");
         return equipoService.obtenerTodasClases();
     }
 }
