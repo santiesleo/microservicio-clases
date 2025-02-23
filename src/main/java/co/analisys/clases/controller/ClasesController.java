@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/clases")
+@RequestMapping("api/clases")
 class ClasesController {
     private final IClaseService equipoService;
 

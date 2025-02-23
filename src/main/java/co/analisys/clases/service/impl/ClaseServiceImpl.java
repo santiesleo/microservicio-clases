@@ -6,7 +6,6 @@ import co.analisys.clases.model.ClaseId;
 import co.analisys.clases.model.EntrenadorId;
 import co.analisys.clases.repository.ClaseRepository;
 import co.analisys.clases.service.interfaces.IClaseService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -31,7 +30,7 @@ public class ClaseServiceImpl implements IClaseService {
 
         // Verificar disponibilidad del entrenador
         ResponseEntity<Boolean> response = restTemplate.getForEntity(
-                "http://localhost:8087/entrenadores/" + claseDTO.getEntrenadorId() + "/disponible",
+                "http://localhost:8087/api/entrenadores/" + claseDTO.getEntrenadorId() + "/disponible",
                 Boolean.class
         );
 
