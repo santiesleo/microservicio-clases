@@ -28,7 +28,7 @@ public class ClaseServiceImpl implements IClaseService {
 
         // Verificar disponibilidad del entrenador
         ResponseEntity<Boolean> response = restTemplate.getForEntity(
-                "http://localhost:8087/api/entrenadores/" + claseDTO.getEntrenadorId().getEntrenadorIdValue() + "/disponible",
+                "http://localhost:8087/api/entrenadores/" + claseDTO.getEntrenadorId() + "/disponible",
                 Boolean.class
         );
 
@@ -48,21 +48,21 @@ public class ClaseServiceImpl implements IClaseService {
 
     private Clase mapToEntity(ClaseDTO dto) {
         Clase clase = new Clase();
-        clase.setId(dto.getId());
+        clase.setId(new ClaseId(dto.getId()));
         clase.setNombre(dto.getNombre());
         clase.setHorario(dto.getHorario());
         clase.setCapacidadMaxima(dto.getCapacidadMaxima());
-        clase.setEntrenadorId(new EntrenadorId(dto.getEntrenadorId().getEntrenadorIdValue()));
+        clase.setEntrenadorId(new EntrenadorId(dto.getEntrenadorId()));
         return clase;
     }
 
     private ClaseDTO mapToDTO(Clase clase) {
         ClaseDTO dto = new ClaseDTO();
-        dto.setId(clase.getId());
+        dto.setId(clase.getId().getClaseIdValue());
         dto.setNombre(clase.getNombre());
         dto.setHorario(clase.getHorario());
         dto.setCapacidadMaxima(clase.getCapacidadMaxima());
-        dto.setEntrenadorId(new EntrenadorId(clase.getEntrenadorId().getEntrenadorIdValue()));
+        dto.setEntrenadorId(clase.getEntrenadorId().getEntrenadorIdValue());
         return dto;
     }
 }
