@@ -1,7 +1,6 @@
 package co.analisys.clases.service.interfaces;
 
 import co.analisys.clases.dto.ClaseDTO;
-import co.analisys.clases.model.Clase;
 
 import java.util.List;
 

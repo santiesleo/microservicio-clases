@@ -17,18 +17,21 @@ import java.util.stream.Collectors;
 @Service
 public class ClaseServiceImpl implements IClaseService {
 
-    @Autowired
-    private ClaseRepository claseRepository;
+    private final ClaseRepository claseRepository;
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
+
+    public ClaseServiceImpl(ClaseRepository claseRepository, RestTemplate restTemplate) {
+        this.claseRepository = claseRepository;
+        this.restTemplate = restTemplate;
+    }
 
     @Override
     public ClaseDTO programarClase(ClaseDTO claseDTO) {
 
         // Verificar disponibilidad del entrenador
         ResponseEntity<Boolean> response = restTemplate.getForEntity(
-                "http://localhost:8087/api/entrenadores/" + claseDTO.getEntrenadorId() + "/disponible",
+                "http://localhost:8087/entrenadores/" + claseDTO.getEntrenadorId() + "/disponible",
                 Boolean.class
         );
 
