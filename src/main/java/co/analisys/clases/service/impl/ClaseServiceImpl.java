@@ -1,9 +1,7 @@
 package co.analisys.clases.service.impl;
 
 import co.analisys.clases.dto.ClaseDTO;
-import co.analisys.clases.model.Clase;
-import co.analisys.clases.model.ClaseId;
-import co.analisys.clases.model.EntrenadorId;
+import co.analisys.clases.model.*;
 import co.analisys.clases.repository.ClaseRepository;
 import co.analisys.clases.service.interfaces.IClaseService;
 import org.springframework.http.ResponseEntity;
@@ -49,11 +47,12 @@ public class ClaseServiceImpl implements IClaseService {
     }
 
     private Clase mapToEntity(ClaseDTO dto) {
+        Horario horario = Horario.crear(dto.getHoraInicio(), dto.getHoraFin(), dto.getDiasSemana());
         Clase clase = new Clase();
         clase.setId(new ClaseId(dto.getId()));
         clase.setNombre(dto.getNombre());
-        clase.setHorario(dto.getHorario());
-        clase.setCapacidadMaxima(dto.getCapacidadMaxima());
+        clase.setHorario(horario);
+        clase.setCapacidadMaxima(new Capacidad(dto.getCapacidadMaxima()));
         clase.setEntrenadorId(new EntrenadorId(dto.getEntrenadorId()));
         return clase;
     }
@@ -62,8 +61,10 @@ public class ClaseServiceImpl implements IClaseService {
         ClaseDTO dto = new ClaseDTO();
         dto.setId(clase.getId().getClaseIdValue());
         dto.setNombre(clase.getNombre());
-        dto.setHorario(clase.getHorario());
-        dto.setCapacidadMaxima(clase.getCapacidadMaxima());
+        dto.setHoraInicio(clase.getHorario().getHoraInicio());
+        dto.setHoraFin(clase.getHorario().getHoraFin());
+        dto.setDiasSemana(clase.getHorario().getDiasSemana());
+        dto.setCapacidadMaxima(clase.getCapacidadMaxima().getValorMaximo());
         dto.setEntrenadorId(clase.getEntrenadorId().getEntrenadorIdValue());
         return dto;
     }

@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Data
 @AllArgsConstructor
@@ -17,8 +15,10 @@ public class Clase {
     @EmbeddedId
     private ClaseId id;
     private String nombre;
-    private LocalDateTime horario;
-    private int capacidadMaxima;
+    @Embedded
+    private Horario horario;
+    @Embedded
+    private Capacidad capacidadMaxima;
 
     @Embedded
     private EntrenadorId entrenadorId;

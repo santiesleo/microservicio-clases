@@ -1,10 +1,12 @@
 package co.analisys.clases.dto;
 
+import co.analisys.clases.model.Horario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -12,7 +14,10 @@ import java.time.LocalDateTime;
 public class ClaseDTO {
     private String id;
     private String nombre;
-    private LocalDateTime horario;
+    private LocalTime horaInicio;
+    private LocalTime horaFin;
+    private Set<Horario.DiaSemana> diasSemana;
     private int capacidadMaxima;
+    private int ocupacionActual;
     private String entrenadorId;
 }
