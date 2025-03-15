@@ -22,7 +22,8 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",  // Documentación OpenAPI
                                 "/swagger-ui/**",    // Interfaz Swagger
                                 "/swagger-ui.html",  // Página principal Swagger
-                                "/circulacion/public/**"
+                                "/circulacion/public/**",
+                                "/api/entrenadores/*/disponible"
                         ).permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
