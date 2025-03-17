@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -37,12 +38,13 @@ public class ClasesController {
         return claseService.obtenerTodasClases();
     }
 
-    @PutMapping("/cambiar-horario")
+    @Operation(summary = "Cambiar horario de una clase",
+            description = "Permite cambiar el horario de una clase específica. " +
+                    "Accesible solo para entrenadores y administradores.")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TRAINER')")
-    public ResponseEntity<String> cambiarHorario(@RequestBody ClaseDTO claseDTO) {
+    @PutMapping("/cambiar-horario")
+    public ResponseEntity<?> cambiarHorario(@RequestBody ClaseDTO claseDTO) {
         claseService.cambiarHorario(claseDTO);
         return ResponseEntity.ok("Horario cambiado correctamente");
     }
-
-
 }
