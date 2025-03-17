@@ -21,4 +21,8 @@ public class ClaseDTO implements Serializable {
     private int capacidadMaxima;
     private int ocupacionActual;
     private String entrenadorId;
+
+    public String toString() {
+        return "ClaseDTO(id=" + this.getId() + ", nombre=" + this.getNombre() + ", horaInicio=" + this.getHoraInicio() + ", horaFin=" + this.getHoraFin() + ", diasSemana=" + this.getDiasSemana() + ", capacidadMaxima=" + this.getCapacidadMaxima() + ", ocupacionActual=" + this.getOcupacionActual() + ", entrenadorId=" + this.getEntrenadorId() + ")";
+    }
 }

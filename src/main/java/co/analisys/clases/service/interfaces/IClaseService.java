@@ -9,4 +9,8 @@ public interface IClaseService {
     ClaseDTO programarClase(ClaseDTO claseDTO);
 
     List<ClaseDTO> obtenerTodasClases();
+
+    ClaseDTO obtenerClasePorId(String claseId);
+
+    void actualizarClase(ClaseDTO claseDTO);
 }

@@ -9,18 +9,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ClaseServiceImpl implements IClaseService {
 
     private final ClaseRepository claseRepository;
-
     private final RestTemplate restTemplate;
+    private final OcupacionClaseProducer ocupacionClaseProducer;
 
-    public ClaseServiceImpl(ClaseRepository claseRepository, RestTemplate restTemplate) {
+    public ClaseServiceImpl(ClaseRepository claseRepository, RestTemplate restTemplate, OcupacionClaseProducer ocupacionClaseProducer) {
         this.claseRepository = claseRepository;
         this.restTemplate = restTemplate;
+        this.ocupacionClaseProducer = ocupacionClaseProducer;
     }
 
     @Override
@@ -68,4 +70,28 @@ public class ClaseServiceImpl implements IClaseService {
         dto.setEntrenadorId(clase.getEntrenadorId().getEntrenadorIdValue());
         return dto;
     }
+
+    @Override
+    public ClaseDTO obtenerClasePorId(String claseId) {
+        return claseRepository.findById(new ClaseId(claseId))
+                .map(this::mapToDTO)
+                .orElseThrow(() ->  new RuntimeException("Clase no encontrada"));
+    }
+
+    @Override
+    public void actualizarClase(ClaseDTO claseDTO) {
+        System.out.println("Actualizando clase: " + claseDTO);
+
+        Optional<Clase> claseOptional = claseRepository.findById(new ClaseId(claseDTO.getId()));
+        if (claseOptional.isPresent()) {
+            Clase clase = claseOptional.get();
+            clase.setCapacidadMaxima(new Capacidad(claseDTO.getCapacidadMaxima(), claseDTO.getOcupacionActual()));
+
+            claseRepository.save(clase);
+            ocupacionClaseProducer.actualizarOcupacion(claseDTO.getId(), claseDTO.getOcupacionActual());
+        } else {
+            System.out.println("Clase no encontrada: " + claseDTO.getId());
+        }
+    }
+
 }
