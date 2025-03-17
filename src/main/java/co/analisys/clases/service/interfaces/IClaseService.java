@@ -13,4 +13,7 @@ public interface IClaseService {
     ClaseDTO obtenerClasePorId(String claseId);
 
     void actualizarClase(ClaseDTO claseDTO);
+
+
+    void actualizarClaseSinMensaje(ClaseDTO clase);
 }

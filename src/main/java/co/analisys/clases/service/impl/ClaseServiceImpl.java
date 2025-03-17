@@ -94,4 +94,18 @@ public class ClaseServiceImpl implements IClaseService {
         }
     }
 
+    public void actualizarClaseSinMensaje(ClaseDTO claseDTO) {
+        System.out.println("Actualizando clase sin enviar mensaje: " + claseDTO);
+
+        Optional<Clase> claseOptional = claseRepository.findById(new ClaseId(claseDTO.getId()));
+        if (claseOptional.isPresent()) {
+            Clase clase = claseOptional.get();
+            clase.setCapacidadMaxima(new Capacidad(claseDTO.getCapacidadMaxima(), claseDTO.getOcupacionActual()));
+            claseRepository.save(clase);
+            // No llamar a ocupacionClaseProducer.actualizarOcupacion()
+        } else {
+            System.out.println("Clase no encontrada: " + claseDTO.getId());
+        }
+    }
+
 }

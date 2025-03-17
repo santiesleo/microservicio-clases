@@ -58,13 +58,17 @@ public class KafkaConfig {
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, OcupacionClase> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, OcupacionClase> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, OcupacionClase> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
 
-        // Agregar rebalance listener para manejo de offset
+        // Configurar el rebalance listener en el factory
         factory.getContainerProperties().setConsumerRebalanceListener(rebalanceListener);
-        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
+
+        // Configure manual acknowledgment if needed
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
 
         return factory;
     }
+
 }

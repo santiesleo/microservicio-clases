@@ -44,7 +44,9 @@ public class OcupacionClaseConsumer {
         if (clase != null) {
             System.out.println("Actualizando ocupación de la clase: " + ocupacion.getClaseId() + " a " + ocupacion.getOcupacionActual());
             clase.setOcupacionActual(ocupacion.getOcupacionActual());
-            claseService.actualizarClase(clase);
+
+            // Actualizar sin volver a enviar mensaje a Kafka
+            claseService.actualizarClaseSinMensaje(clase);
         } else System.out.println("Clase no encontrada: " + ocupacion.getClaseId());
     }
 }
