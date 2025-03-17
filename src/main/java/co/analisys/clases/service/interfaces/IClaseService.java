@@ -9,4 +9,7 @@ public interface IClaseService {
     ClaseDTO programarClase(ClaseDTO claseDTO);
 
     List<ClaseDTO> obtenerTodasClases();
+
+    void cambiarHorario(ClaseDTO claseDTO);
+
 }

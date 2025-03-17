@@ -4,6 +4,7 @@ import co.analisys.clases.dto.ClaseDTO;
 import co.analisys.clases.service.interfaces.IClaseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -35,4 +36,13 @@ public class ClasesController {
     public List<ClaseDTO> obtenerTodasClases() {
         return claseService.obtenerTodasClases();
     }
+
+    @PutMapping("/cambiar-horario")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TRAINER')")
+    public ResponseEntity<String> cambiarHorario(@RequestBody ClaseDTO claseDTO) {
+        claseService.cambiarHorario(claseDTO);
+        return ResponseEntity.ok("Horario cambiado correctamente");
+    }
+
+
 }
