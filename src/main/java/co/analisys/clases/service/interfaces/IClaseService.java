@@ -10,6 +10,15 @@ public interface IClaseService {
 
     List<ClaseDTO> obtenerTodasClases();
 
+<<<<<<< HEAD
+    ClaseDTO obtenerClasePorId(String claseId);
+
+    void actualizarClase(ClaseDTO claseDTO);
+
+
+    void actualizarClaseSinMensaje(ClaseDTO clase);
+=======
     void cambiarHorario(ClaseDTO claseDTO);
 
+>>>>>>> origin/main
 }
