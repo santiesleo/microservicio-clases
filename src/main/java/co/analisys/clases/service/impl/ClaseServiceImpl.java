@@ -4,6 +4,7 @@ import co.analisys.clases.dto.ClaseDTO;
 import co.analisys.clases.model.*;
 import co.analisys.clases.repository.ClaseRepository;
 import co.analisys.clases.service.interfaces.IClaseService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -17,18 +18,26 @@ public class ClaseServiceImpl implements IClaseService {
 
     private final ClaseRepository claseRepository;
     private final RestTemplate restTemplate;
+<<<<<<< HEAD
     private final OcupacionClaseProducer ocupacionClaseProducer;
 
     public ClaseServiceImpl(ClaseRepository claseRepository, RestTemplate restTemplate, OcupacionClaseProducer ocupacionClaseProducer) {
         this.claseRepository = claseRepository;
         this.restTemplate = restTemplate;
         this.ocupacionClaseProducer = ocupacionClaseProducer;
+=======
+    private final RabbitTemplate rabbitTemplate;
+
+    public ClaseServiceImpl(ClaseRepository claseRepository, RestTemplate restTemplate, RabbitTemplate rabbitTemplate) {
+        this.claseRepository = claseRepository;
+        this.restTemplate = restTemplate;
+        this.rabbitTemplate = rabbitTemplate;
+>>>>>>> origin/main
     }
 
     @Override
     public ClaseDTO programarClase(ClaseDTO claseDTO) {
 
-        // Verificar disponibilidad del entrenador
         ResponseEntity<Boolean> response = restTemplate.getForEntity(
                 "http://localhost:8087/api/entrenadores/" + claseDTO.getEntrenadorId() + "/disponible",
                 Boolean.class
@@ -37,6 +46,9 @@ public class ClaseServiceImpl implements IClaseService {
         if (Boolean.TRUE.equals(response.getBody())) {
             Clase clase = mapToEntity(claseDTO);
             Clase savedClase = claseRepository.save(clase);
+
+            rabbitTemplate.convertAndSend("gimnasio.exchange", "horarios.cambio", "Horario cambiado: " + clase.getNombre());
+
             return mapToDTO(savedClase);
         } else {
             throw new RuntimeException("El entrenador no está disponible");
@@ -72,6 +84,7 @@ public class ClaseServiceImpl implements IClaseService {
     }
 
     @Override
+<<<<<<< HEAD
     public ClaseDTO obtenerClasePorId(String claseId) {
         return claseRepository.findById(new ClaseId(claseId))
                 .map(this::mapToDTO)
@@ -106,6 +119,20 @@ public class ClaseServiceImpl implements IClaseService {
         } else {
             System.out.println("Clase no encontrada: " + claseDTO.getId());
         }
+=======
+    public void cambiarHorario(ClaseDTO claseDTO) {
+        Clase clase = claseRepository.findById(new ClaseId(claseDTO.getId()))
+                .orElseThrow(() -> new RuntimeException("Clase no encontrada"));
+
+        // Actualizar horario
+        clase.setHorario(Horario.crear(claseDTO.getHoraInicio(), claseDTO.getHoraFin(), claseDTO.getDiasSemana()));
+        claseRepository.save(clase);
+
+        // Enviar notificación a RabbitMQ
+        rabbitTemplate.convertAndSend("gimnasio.exchange", "horarios.cambio", claseDTO);
+
+        System.out.println("Horario cambiado y notificado en RabbitMQ: " + claseDTO.getNombre());
+>>>>>>> origin/main
     }
 
 }
