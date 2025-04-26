@@ -18,21 +18,15 @@ public class ClaseServiceImpl implements IClaseService {
 
     private final ClaseRepository claseRepository;
     private final RestTemplate restTemplate;
-<<<<<<< HEAD
-    private final OcupacionClaseProducer ocupacionClaseProducer;
 
-    public ClaseServiceImpl(ClaseRepository claseRepository, RestTemplate restTemplate, OcupacionClaseProducer ocupacionClaseProducer) {
-        this.claseRepository = claseRepository;
-        this.restTemplate = restTemplate;
-        this.ocupacionClaseProducer = ocupacionClaseProducer;
-=======
+    private final OcupacionClaseProducer ocupacionClaseProducer;
     private final RabbitTemplate rabbitTemplate;
 
-    public ClaseServiceImpl(ClaseRepository claseRepository, RestTemplate restTemplate, RabbitTemplate rabbitTemplate) {
+    public ClaseServiceImpl(ClaseRepository claseRepository, RestTemplate restTemplate, OcupacionClaseProducer ocupacionClaseProducer, RabbitTemplate rabbitTemplate) {
         this.claseRepository = claseRepository;
         this.restTemplate = restTemplate;
         this.rabbitTemplate = rabbitTemplate;
->>>>>>> origin/main
+        this.ocupacionClaseProducer = ocupacionClaseProducer;
     }
 
     @Override
@@ -84,7 +78,6 @@ public class ClaseServiceImpl implements IClaseService {
     }
 
     @Override
-<<<<<<< HEAD
     public ClaseDTO obtenerClasePorId(String claseId) {
         return claseRepository.findById(new ClaseId(claseId))
                 .map(this::mapToDTO)
@@ -119,7 +112,8 @@ public class ClaseServiceImpl implements IClaseService {
         } else {
             System.out.println("Clase no encontrada: " + claseDTO.getId());
         }
-=======
+    }
+
     public void cambiarHorario(ClaseDTO claseDTO) {
         Clase clase = claseRepository.findById(new ClaseId(claseDTO.getId()))
                 .orElseThrow(() -> new RuntimeException("Clase no encontrada"));
@@ -132,7 +126,7 @@ public class ClaseServiceImpl implements IClaseService {
         rabbitTemplate.convertAndSend("gimnasio.exchange", "horarios.cambio", claseDTO);
 
         System.out.println("Horario cambiado y notificado en RabbitMQ: " + claseDTO.getNombre());
->>>>>>> origin/main
+
     }
 
 }
